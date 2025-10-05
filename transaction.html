@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Bank</title>
+    <!-- bootstrap css -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <!-- bootstrap javascript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+    <!-- font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <nav class="bg-primary ">
+        <div class="d-flex justify-content-between p-3">
+            <h1 class="text-light fw-bolder">My Bank</h1>
+            <div class="p-2 fw-semibold">
+                <a class="text-decoration-none text-light me-5" href="">Home</a>
+                <a class="text-decoration-none text-light me-5" href="">Features</a>
+                <a class="text-decoration-none text-light me-5" href="">Pricing</a>
+                <a class="text-decoration-none text-light me-5" href="">About</a>
+            </div>
+        </div>
+    </nav>
+    <section class="min-vh-100 bg-primary ">
+        <h1 class="text-white fw-bold p-3 text-center">Welcome</h1>
+        <div class="container p-5">
+            <div class="row p-5  gap-5">
+                <div class="col ">
+                    <div class="p-5 bg-light text-primary rounded-4">
+                        <h2>Deposit</h2>
+                        <input id="deposit-amound" type="text" class="form-control w-50 mb-3"
+                            placeholder="Enter your Amount">
+                        <input type="password" name="" id="password" class="form-control w-50 mb-3"
+                            placeholder="Enter your Password">
+                        <button class="btn btn-primary" onclick="deposit()">Deposit</button>
+                        <p class="balance fw-bold mt-3">Balance: ₹<span id="deposit-balance">0</span></p>
+                    </div>
+
+                </div>
+                <div class="col">
+                    <div class="p-5 bg-light text-primary rounded-4">
+                        <h2>Withdraw</h2>
+                        <input id="withdraw-amound" type="text" class="form-control w-50 mb-3 "
+                            placeholder="Enter your Amount">
+                        <input type="password" name="" id="pswd" class="form-control w-50 mb-3"
+                            placeholder="Enter your Password">
+                        <button onclick="withdraw()" class="btn btn-primary ">withdraw</button>
+                        <p class="balance fw-bold mt-3">Balance: ₹<span id="withdrawal-balance">0</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container p-5">
+            <div class="row bg-light  rounded-4 p-5">
+                <h2 class="text-primary">Transaction History</h2>
+                <div class="d-flex justify-content-around bg-primary text-light m-3 rounded">
+                    <h5>Date</h5>
+                    <h5>Type</h5>
+                    <h5>Amount</h5>
+                    <h5>Balance</h5>
+                </div>
+                <div id="result" >
+
+
+
+                </div>
+
+
+            </div>
+        </div>
+
+    </section>
+
+    <script>
+
+        let balance = 0
+
+        function deposit() {
+            let deposit = document.getElementById("deposit-amound").value
+            let pswd = document.getElementById("password").value
+
+            let user = JSON.parse(localStorage.getItem("users"))
+
+            let valid = user.find(p => p.password == pswd)
+            console.log(valid);
+
+            if (!valid) {
+                alert("incorrect password")
+            }
+
+            balance += Number(deposit);
+
+            // update balance display
+            document.getElementById("deposit-balance").textContent = balance;
+
+            let today = new Date()
+
+            let day = String(today.getDate())
+            let month = String(today.getMonth() + 1).padStart(2, '0');
+            let year = today.getFullYear();
+
+            let hours = String(today.getHours()).padStart(2, '0');
+            let minutes = String(today.getMinutes()).padStart(2, '0');
+            let seconds = String(today.getSeconds()).padStart(2, '0');
+            let session="AM"
+            if (hours >= 12) {
+                session = "PM";
+            }
+
+            if (hours == 0) {
+                hours = 12; // midnight
+            } else if (hours > 12) {
+                hours = hours - 12; // convert to 12-hour format
+            }
+            let time=hours + ":" + minutes + ":" + seconds
+           let formattedDateAndTime= `${day}/${month}/${year}  ${time}`;
+
+
+            document.getElementById("result").innerHTML += `
+            <div class="d-flex justify-content-around   text-dark ">
+            <p> ${formattedDateAndTime} </p>
+            <p> Deposit </p>
+            <p> ${deposit} </p>
+            <p> ${balance} </p>
+            </div><br>
+            
+            `
+        }
+
+        function withdraw(){
+            let withdraw = document.getElementById("withdraw-amound").value
+            let pswd = document.getElementById("password").value
+
+            let user = JSON.parse(localStorage.getItem("users"))
+
+            let valid = user.find(p => p.password == pswd)
+            console.log(valid);
+
+            if (!valid) {
+                alert("incorrect password")
+            }
+
+            balance -= Number(withdraw);
+
+            // update balance display
+            document.getElementById("withdrawal-balance").textContent = balance;
+
+            let today = new Date()
+
+            let day = String(today.getDate())
+            let month = String(today.getMonth() + 1).padStart(2, '0');
+            let year = today.getFullYear();
+
+            let hours = String(today.getHours()).padStart(2, '0');
+            let minutes = String(today.getMinutes()).padStart(2, '0');
+            let seconds = String(today.getSeconds()).padStart(2, '0');
+            let session="AM"
+            if (hours >= 12) {
+                session = "PM";
+            }
+
+            if (hours == 0) {
+                hours = 12; // midnight
+            } else if (hours > 12) {
+                hours = hours - 12; // convert to 12-hour format
+            }
+            let time=hours + ":" + minutes + ":" + seconds
+           let formattedDateAndTime= `${day}/${month}/${year}  ${time}`;
+
+
+            document.getElementById("result").innerHTML += `
+            <div class="d-flex justify-content-around   text-dark ">
+            <p> ${formattedDateAndTime} </p>
+            <p> withdraw </p>
+            <p> ${withdraw} </p>
+            <p> ${balance} </p>
+            </div><br>
+            
+            `
+        }
+
+    </script>
+
+</body>
+
+</html>

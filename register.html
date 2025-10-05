@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Bank</title>
+     <!-- bootstrap css -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <!-- bootstrap javascript -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+    crossorigin="anonymous"></script>
+</head>
+<body>
+    <section class="min-vh-100 bg-primary">
+        <div class="row d-flex justify-content-center align-items-center text-center p-5">
+            <div class="col"></div>
+            <div class="col bg-light rounded-4 p-5">
+                 <img class="mb-3" src="https://cdn.pixabay.com/photo/2015/10/14/18/43/bank-988164_640.png" width="50px" alt="">
+                <h2 class="text-primary fw-bolder">my bank</h2>
+                <p>create your account to get started</p>
+                <input id="username" placeholder="username" class="form-control mb-3" type="text">
+                <input id="acno" placeholder="Account Number" class="form-control mb-3" type="text">
+                <input id="password" placeholder="Password" class="form-control mb-3" type="text">
+                <button onclick="register()" id="register-btn" class="btn btn-primary w-100 mb-3">Register</button>
+                <p>already have an account?<a href="./login.html">sing in</a></p>
+                
+            </div>
+            <div class="col"></div>
+        </div>
+    </section>
+
+    <script>
+     function register(){
+        let userName=document.getElementById("username").value
+        let acno=document.getElementById("acno").value
+        let password=document.getElementById("password").value
+        
+        let users=JSON.parse(localStorage.getItem("users")) || [];
+
+        let valid=users.find(u => u.userName===userName)
+        if (valid){
+            alert("user already exists")
+        }else{
+            if(!userName||!acno||!password){
+                alert("please fill your datails")
+            }else{
+                users.push ({userName,acno,password})
+                localStorage.setItem("users",JSON.stringify(users))
+                alert("registered successfully")
+                window.location.href="./login.html"
+            }
+        }
+
+     }
+    </script>
+</body>
+</html>
